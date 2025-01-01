@@ -1,5 +1,5 @@
 const NoMatch = () => {
-  return <div>このページはありません</div>
+  return <div>404 Not Found</div>
 }
 
 export default NoMatch
