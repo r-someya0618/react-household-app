@@ -1,5 +1,7 @@
+import { Box } from '@mui/material'
+
 const Report = () => {
-  return <div>Report</div>
+  return <Box fontWeight='fontWeightBold'>Report</Box>
 }
 
 export default Report
