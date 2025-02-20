@@ -19,7 +19,7 @@ function isFireStoreError(err: unknown): err is { code: string; message: string 
 
 function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [currentMonth] = useState(new Date())
+  const [currentMonth, setCurrentMonth] = useState(new Date())
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -50,8 +50,6 @@ function App() {
     return transaction.date.startsWith(formatMonth(currentMonth))
   })
 
-  console.log(monthlyTransactions)
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -60,7 +58,12 @@ function App() {
           <Route path='/' element={<AppLayout />}>
             <Route
               index
-              element={<Home monthlyTransactions={monthlyTransactions} />}
+              element={
+                <Home
+                  monthlyTransactions={monthlyTransactions}
+                  setCurrentMonth={setCurrentMonth}
+                />
+              }
             />
             <Route path='/report' element={<Report />} />
             <Route path='*' element={<NoMatch />} />
