@@ -21,14 +21,16 @@ import IconComponents from './common/iconComponents'
 
 interface TransactionMenuProps {
   dailyTransactions: Transaction[]
-  handleAddTransactionForm: () => void
+  onAddTransactionForm: () => void
+  onSelectTransaction: (transaction: Transaction) => void
   currentDay: string
 }
 
 const TransactionMenu = ({
   dailyTransactions,
   currentDay,
-  handleAddTransactionForm,
+  onAddTransactionForm,
+  onSelectTransaction
 }: TransactionMenuProps) => {
   const menuDrawerWidth = 320
   return (
@@ -65,7 +67,7 @@ const TransactionMenu = ({
           </Box>
           {/* 右側の追加ボタン */}
           <Button
-            onClick={handleAddTransactionForm}
+            onClick={onAddTransactionForm}
             startIcon={<AddCircleIcon />}
             color='primary'
           >
@@ -85,6 +87,7 @@ const TransactionMenu = ({
                           ? (theme) => theme.palette.incomeColor.light
                           : (theme) => theme.palette.expenseColor.light,
                     }}
+                    onClick={() => onSelectTransaction(transaction)}
                   >
                     <CardActionArea>
                       <CardContent>
