@@ -3,17 +3,26 @@ import MonthSelector from '../components/MonthSelector'
 import CategoryChart from '../components/CategoryChart'
 import BarChart from '../components/BarChart'
 import TransactionTable from '../components/TransactionTable'
+import { Transaction } from '../types'
 
 interface ReportPops {
   currentMonth: Date
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>
+  monthlyTransactions: Transaction[]
+  isLoading: boolean
 }
 
-const Report = ({ currentMonth, setCurrentMonth }: ReportPops) => {
+const Report = ({
+  currentMonth,
+  setCurrentMonth,
+  monthlyTransactions,
+  isLoading,
+}: ReportPops) => {
   const commonPaperStyle = {
-    height: { xs: 'auto', md: '400px' },
+    height: '400px',
     display: 'flex',
     flexDirection: 'column',
+    p: 2,
   }
   return (
     <Grid container spacing={2}>
@@ -25,12 +34,18 @@ const Report = ({ currentMonth, setCurrentMonth }: ReportPops) => {
       </Grid>
       <Grid item xs={12} md={4}>
         <Paper sx={commonPaperStyle}>
-          <CategoryChart />
+          <CategoryChart
+            monthlyTransactions={monthlyTransactions}
+            isLoading={isLoading}
+          />
         </Paper>
       </Grid>
       <Grid item xs={12} md={8}>
         <Paper sx={commonPaperStyle}>
-          <BarChart />
+          <BarChart
+            monthlyTransactions={monthlyTransactions}
+            isLoading={isLoading}
+          />
         </Paper>
       </Grid>
       <Grid item xs={12}>

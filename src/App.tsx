@@ -28,6 +28,7 @@ function isFireStoreError(err: unknown): err is { code: string; message: string 
 function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -49,6 +50,8 @@ function App() {
         } else {
           console.error('一般的なエラーは: ', err)
         }
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchTransactions()
@@ -147,6 +150,8 @@ function App() {
                 <Report
                   currentMonth={currentMonth}
                   setCurrentMonth={setCurrentMonth}
+                  monthlyTransactions={monthlyTransactions}
+                  isLoading={isLoading}
                 />
               }
             />
