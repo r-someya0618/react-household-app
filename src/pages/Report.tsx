@@ -3,29 +3,19 @@ import MonthSelector from '../components/MonthSelector'
 import CategoryChart from '../components/CategoryChart'
 import BarChart from '../components/BarChart'
 import TransactionTable from '../components/TransactionTable'
-import { Transaction } from '../types'
+import { useAppContext } from '../context/AppContext'
+import useMonthlyTransactions from '../hooks/useMonthryTransactions'
 
-interface ReportPops {
-  currentMonth: Date
-  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>
-  monthlyTransactions: Transaction[]
-  isLoading: boolean
-  onDeleteTransaction: (transactionId: string | readonly string[]) => Promise<void>
-}
-
-const Report = ({
-  currentMonth,
-  setCurrentMonth,
-  monthlyTransactions,
-  isLoading,
-  onDeleteTransaction,
-}: ReportPops) => {
+const Report = () => {
   const commonPaperStyle = {
     height: '400px',
     display: 'flex',
     flexDirection: 'column',
     p: 2,
   }
+  const { currentMonth, setCurrentMonth, onDeleteTransaction, isLoading } =
+    useAppContext()
+  const monthlyTransactions = useMonthlyTransactions()
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

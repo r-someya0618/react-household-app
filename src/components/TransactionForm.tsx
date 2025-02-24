@@ -26,17 +26,14 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { ExpenseCategory, IncomeCategory, Transaction } from '../types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Schema, transactionSchema } from '../validations/schema'
+import { useAppContext } from '../context/AppContext'
 
 interface TransactionFormProps {
   isEntryDrawerOpen: boolean
   onCloseForm: () => void
   currentDay: string
-  onSaveTransaction: (transaction: Schema) => Promise<void>
-  onUpdateTransaction: (transaction: Schema, transactionId: string) => Promise<void>
-  onDeleteTransaction: (transactionId: string | readonly string[]) => Promise<void>
   selectedTransaction: Transaction | null
   setSelectedTransaction: React.Dispatch<React.SetStateAction<Transaction | null>>
-  isMobile: boolean
   isDialogOpen: boolean
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -52,15 +49,14 @@ const TransactionForm = ({
   isEntryDrawerOpen,
   onCloseForm,
   currentDay,
-  onSaveTransaction,
-  onUpdateTransaction,
   selectedTransaction,
   setSelectedTransaction,
-  onDeleteTransaction,
-  isMobile,
   isDialogOpen,
   setIsDialogOpen,
 }: TransactionFormProps) => {
+  const { isMobile, onSaveTransaction, onUpdateTransaction, onDeleteTransaction } =
+    useAppContext()
+
   const formWidth = 320
 
   const expenseCategories: CategoryItem[] = [
