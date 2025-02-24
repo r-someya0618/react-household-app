@@ -16,6 +16,7 @@ interface CalendarProps {
   setCurrentDay: React.Dispatch<React.SetStateAction<string>>
   currentDay: string
   today: string
+  onDateClick: (dateInfo: DateClickArg) => void
 }
 
 const Calender = ({
@@ -24,6 +25,7 @@ const Calender = ({
   setCurrentDay,
   currentDay,
   today,
+  onDateClick,
 }: CalendarProps) => {
   const theme = useTheme()
   const dailyBalances = calculateDailyBalances(monthlyTransactions)
@@ -75,10 +77,6 @@ const Calender = ({
     }
   }
 
-  const handleDateClick = (dateInfo: DateClickArg) => {
-    setCurrentDay(dateInfo.dateStr)
-  }
-
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
@@ -87,7 +85,7 @@ const Calender = ({
       events={[...calendarEvents, backgroundEvent]}
       eventContent={renderEventContent}
       datesSet={handleDateSet}
-      dateClick={handleDateClick}
+      dateClick={onDateClick}
     />
   )
 }

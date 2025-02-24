@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, useMediaQuery, useTheme } from '@mui/material'
 import MonthlySummary from '../components/MonthlySummary'
 import Calender from '../components/Calender'
 import TransactionMenu from '../components/TransactionMenu'
@@ -7,6 +7,7 @@ import { Transaction } from '../types'
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { Schema } from '../validations/schema'
+import { DateClickArg } from '@fullcalendar/interaction/index.js'
 
 interface HomeProps {
   monthlyTransactions: Transaction[]
@@ -26,9 +27,13 @@ const Home = ({
   const today = format(new Date(), 'yyyy-MM-dd')
   const [currentDay, setCurrentDay] = useState(today)
   const [isEntryDrawerOpen, setIsEntryDrawerOpen] = useState(false)
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(
     null
   )
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
 
   const dailyTransactions = monthlyTransactions.filter(
     (transaction) => transaction.date === currentDay
@@ -36,20 +41,41 @@ const Home = ({
 
   const onCloseForm = () => {
     setSelectedTransaction(null)
-    setIsEntryDrawerOpen(!isEntryDrawerOpen)
-  }
-
-  const handleAddTransactionForm = () => {
-    if (selectedTransaction) {
-      setSelectedTransaction(null)
+    if (isMobile) {
+      setIsDialogOpen(!isDialogOpen)
     } else {
       setIsEntryDrawerOpen(!isEntryDrawerOpen)
     }
   }
 
+  const handleAddTransactionForm = () => {
+    if (isMobile) {
+      setIsDialogOpen(true)
+    } else {
+      if (selectedTransaction) {
+        setSelectedTransaction(null)
+      } else {
+        setIsEntryDrawerOpen(!isEntryDrawerOpen)
+      }
+    }
+  }
+
   const handleSelectTransaction = (transaction: Transaction) => {
-    setIsEntryDrawerOpen(true)
     setSelectedTransaction(transaction)
+
+    if (isMobile) {
+      setIsDialogOpen(true)
+    } else {
+      setIsEntryDrawerOpen(true)
+    }
+  }
+
+  const handleDateClick = (dateInfo: DateClickArg) => {
+    setCurrentDay(dateInfo.dateStr)
+    setIsMobileDrawerOpen(true)
+  }
+  const handleCloseMobileDrawer = () => {
+    setIsMobileDrawerOpen(false)
   }
 
   return (
@@ -63,6 +89,7 @@ const Home = ({
           setCurrentDay={setCurrentDay}
           currentDay={currentDay}
           today={today}
+          onDateClick={handleDateClick}
         />
       </Box>
 
@@ -73,6 +100,9 @@ const Home = ({
           currentDay={currentDay}
           onAddTransactionForm={handleAddTransactionForm}
           onSelectTransaction={handleSelectTransaction}
+          isMobile={isMobile}
+          isOpen={isMobileDrawerOpen}
+          onClose={handleCloseMobileDrawer}
         />
         <TransactionForm
           isEntryDrawerOpen={isEntryDrawerOpen}
@@ -83,6 +113,9 @@ const Home = ({
           setSelectedTransaction={setSelectedTransaction}
           onDeleteTransaction={onDeleteTransaction}
           onUpdateTransaction={onUpdateTransaction}
+          isMobile={isMobile}
+          isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
         />
       </Box>
     </Box>
