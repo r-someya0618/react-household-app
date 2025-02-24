@@ -2,7 +2,7 @@ import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import React from 'react'
 import { Transaction } from '../types'
 import { financeCalculations } from '../utils/financeCalculations'
-import { formatCurrency } from '../utils/formattiong'
+import { formatCurrency } from '../utils/formatting'
 
 interface DailySummaryProps {
   dailyTransactions: Transaction[]

@@ -15,7 +15,7 @@ import {
 import NotesIcon from '@mui/icons-material/Notes'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import DailySummary from './DailySummary'
-import { formatCurrency } from '../utils/formattiong'
+import { formatCurrency } from '../utils/formatting'
 import { Transaction } from '../types'
 import IconComponents from './common/iconComponents'
 
@@ -30,7 +30,7 @@ const TransactionMenu = ({
   dailyTransactions,
   currentDay,
   onAddTransactionForm,
-  onSelectTransaction
+  onSelectTransaction,
 }: TransactionMenuProps) => {
   const menuDrawerWidth = 320
   return (

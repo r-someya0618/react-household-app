@@ -18,7 +18,7 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { db } from './firebase'
-import { formatMonth } from './utils/formattiong'
+import { formatMonth } from './utils/formatting'
 import { Schema } from './validations/schema'
 
 function isFireStoreError(err: unknown): err is { code: string; message: string } {
@@ -84,12 +84,20 @@ function App() {
     }
   }
 
-  const handleDeleteTransaction = async (transactionId: string) => {
+  const handleDeleteTransaction = async (
+    transactionIds: string | readonly string[]
+  ) => {
     try {
+      const idsToDelete = Array.isArray(transactionIds)
+        ? transactionIds
+        : [transactionIds]
+
+      for (const id of idsToDelete) {
+        await deleteDoc(doc(db, 'Transactions', id))
+      }
       // firestoreデータ削除
-      await deleteDoc(doc(db, 'Transactions', transactionId))
       const filteredTransaction = transactions.filter(
-        (transaction) => transaction.id !== transactionId
+        (transaction) => !idsToDelete.includes(transaction.id)
       )
       setTransactions(filteredTransaction)
     } catch (err) {
@@ -152,6 +160,7 @@ function App() {
                   setCurrentMonth={setCurrentMonth}
                   monthlyTransactions={monthlyTransactions}
                   isLoading={isLoading}
+                  onDeleteTransaction={handleDeleteTransaction}
                 />
               }
             />

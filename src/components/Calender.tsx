@@ -6,7 +6,7 @@ import '../calender.css'
 import { DatesSetArg, EventContentArg } from '@fullcalendar/core/index.js'
 import { Balance, CalendarContent, Transaction } from '../types'
 import { calculateDailyBalances } from '../utils/financeCalculations'
-import { formatCurrency } from '../utils/formattiong'
+import { formatCurrency } from '../utils/formatting'
 import { useTheme } from '@mui/material'
 import { isSameMonth } from 'date-fns'
 
